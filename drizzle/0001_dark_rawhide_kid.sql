@@ -1,1 +1,0 @@
-CREATE TYPE "public"."rating" AS ENUM('1', '2', '3', '4', '5');
