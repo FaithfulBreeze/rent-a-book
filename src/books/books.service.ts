@@ -2,28 +2,38 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import * as schema from '../drizzle/schema'
+import { desc, eq } from 'drizzle-orm';
+import * as schema from '../drizzle/schema';
 
 @Injectable()
 export class BooksService {
-  constructor(@Inject('DrizzleProvider') private readonly db: NodePgDatabase<typeof schema>) {}
+  constructor(
+    @Inject('DrizzleProvider')
+    private readonly db: NodePgDatabase<typeof schema>,
+  ) {}
+
   create(createBookDto: CreateBookDto) {
-    return 'This action adds a new book';
+    return this.db.insert(schema.books).values([createBookDto]).returning()
   }
 
-  findAll() {
-    return `This action returns all books`;
+  findAll(limit: string, skip: string) {
+    return this.db
+      .select()
+      .from(schema.books)
+      .limit(+limit || 50)
+      .offset(+skip || 0)
+      .orderBy(desc(schema.books.rating))
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} book`;
+  findOne(id: string) {
+    return this.db.select().from(schema.books).where(eq(schema.books.id, id))
   }
 
-  update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+  update(id: string, updateBookDto: UpdateBookDto) {
+    return this.db.update(schema.books).set(updateBookDto).where(eq(schema.books.id, id)).returning()
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} book`;
+  remove(id: string) {
+    return this.db.delete(schema.books).where(eq(schema.books.id, id));
   }
 }
