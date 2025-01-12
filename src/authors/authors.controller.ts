@@ -8,15 +8,19 @@ import {
   Delete,
   ValidationPipe,
   UsePipes,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { GetAuthorDto } from './dto/get-author.dto';
 import { DeleteAuthorDto } from './dto/delete-author.dto';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 
 @Controller('authors')
 @UsePipes(ValidationPipe)
+@UseInterceptors(CacheInterceptor)
+@CacheTTL(1000 * 10)
 export class AuthorsController {
   constructor(private readonly authorsService: AuthorsService) {}
 
