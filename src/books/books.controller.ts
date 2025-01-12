@@ -8,8 +8,10 @@ import {
   Delete,
   Query,
   ValidationPipe,
+  UseInterceptors,
   UsePipes,
 } from '@nestjs/common';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
@@ -18,6 +20,8 @@ import { DeleteBookDto } from './dto/delete-book.dto';
 
 @Controller('books')
 @UsePipes(ValidationPipe)
+@UseInterceptors(CacheInterceptor)
+@CacheTTL(1000 * 10)
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
