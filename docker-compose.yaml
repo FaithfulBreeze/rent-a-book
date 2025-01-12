@@ -7,6 +7,18 @@ services:
       - '6379:6379'
     volumes: 
       - cache:/data
+
+  database:
+    image: postgres
+    container_name: postgres-container
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=rent_a_book
+      - POSTGRES_USER=rent_a_book
+    ports: 
+      - 9909:5432
+
 volumes:
   cache:
     driver: local
