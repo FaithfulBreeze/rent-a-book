@@ -49,6 +49,7 @@ lerna-debug.log*
 # Runtime data
 drizzle
 pids
+postgres_data
 *.pid
 *.seed
 *.pid.lock
