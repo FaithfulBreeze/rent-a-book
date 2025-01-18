@@ -26,10 +26,13 @@ export class UsersService {
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.db
+      .update(schema.users)
+      .set(updateUserDto)
+      .where(eq(schema.users.id, id));
   }
 
   remove(id: string) {
-    return `This action removes a #${id} user`;
+    return this.db.delete(schema.users).where(eq(schema.users.id, id));
   }
 }
