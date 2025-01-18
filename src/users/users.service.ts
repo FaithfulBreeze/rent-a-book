@@ -4,14 +4,20 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from 'src/drizzle/schema';
 import { eq, getTableColumns } from 'drizzle-orm';
+import { EncryptionService } from 'src/encryption/encryption.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @Inject('DrizzleProvider')
     private readonly db: NodePgDatabase<typeof schema>,
+    private readonly encryptionService: EncryptionService,
   ) {}
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
+    createUserDto.password = await this.encryptionService.encrypt(
+      createUserDto.password,
+    );
+    console.log(createUserDto)
     return this.db.insert(schema.users).values(createUserDto).returning();
   }
 
