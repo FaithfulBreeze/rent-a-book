@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { EncryptionModule } from './encryption/encryption.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from './jwt/jwt.module';
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { JwtModule } from './jwt/jwt.module';
     EncryptionModule,
     AuthModule,
     JwtModule,
+    MailerModule,
   ],
   controllers: [],
   providers: [],

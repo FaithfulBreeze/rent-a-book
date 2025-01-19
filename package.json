@@ -32,6 +32,7 @@
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.38.3",
     "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.16",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"
@@ -48,6 +49,7 @@
     "@types/jest": "^29.5.2",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20.3.1",
+    "@types/nodemailer": "^6.4.17",
     "@types/pg": "^8.11.10",
     "@types/supertest": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
