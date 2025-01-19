@@ -20,6 +20,10 @@ export class CreateUserDto {
   @IsString()
   @Length(8, 30)
   password: string;
+  @IsNotEmpty()
+  @IsString()
+  @Length(8, 30)
+  confirmPassword: string;
   @ValidateIf((o) => o.hasLibrary == true)
   @IsNotEmpty()
   @IsUUID()
