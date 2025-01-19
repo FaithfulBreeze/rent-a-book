@@ -17,7 +17,6 @@ export class UsersService {
     createUserDto.password = await this.encryptionService.encrypt(
       createUserDto.password,
     );
-    console.log(createUserDto)
     return this.db.insert(schema.users).values(createUserDto).returning();
   }
 
