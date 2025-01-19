@@ -50,6 +50,7 @@ lerna-debug.log*
 drizzle
 pids
 postgres_data
+cache
 *.pid
 *.seed
 *.pid.lock
