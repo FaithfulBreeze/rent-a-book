@@ -9,12 +9,13 @@ import {
   UsePipes,
   ValidationPipe,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { GetUserDto } from './dto/get-user.dto';
-import { DeleteUserDto } from './dto/delete-user.dto';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
+import { User } from 'src/decorators/user/user.decorator';
 
 @Controller('users')
 @UsePipes(ValidationPipe)
@@ -26,18 +27,21 @@ export class UsersController {
     return this.usersService.create(createUserDto, validationCode);
   }
 
-  @Get(':id')
-  findOne(@Param() { id }: GetUserDto) {
+  @Get()
+  @UseGuards(AuthGuard)
+  findOne(@User() id: string) {
     return this.usersService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param() { id }: UpdateUserDto, @Body() updateUserDto: UpdateUserDto) {
+  @Patch()
+  @UseGuards(AuthGuard)
+  update(@User() id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
 
-  @Delete(':id')
-  remove(@Param() { id }: DeleteUserDto) {
+  @Delete()
+  @UseGuards(AuthGuard)
+  remove(@User() id: string) {
     return this.usersService.remove(id);
   }
 }
