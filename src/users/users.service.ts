@@ -8,7 +8,6 @@ import { eq, getTableColumns } from 'drizzle-orm';
 import { EncryptionService } from 'src/encryption/encryption.service';
 import { MailerService } from 'src/mailer/mailer.service';
 import { RedisService } from 'src/redis/redis.service';
-import { ContextCreator } from '@nestjs/core/helpers/context-creator';
 
 @Injectable()
 export class UsersService {

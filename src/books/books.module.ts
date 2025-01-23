@@ -4,7 +4,7 @@ import { BooksController } from './books.controller';
 import { AuthorsModule } from 'src/authors/authors.module';
 
 @Module({
-  imports: [AuthorsModule], 
+  imports: [AuthorsModule],
   controllers: [BooksController],
   providers: [BooksService],
 })

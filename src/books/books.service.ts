@@ -3,7 +3,7 @@ import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { desc, eq } from 'drizzle-orm';
-import * as schema from '../drizzle/schema';
+import * as schema from 'src/drizzle/schema';
 import { AuthorsService } from 'src/authors/authors.service';
 
 @Injectable()

@@ -4,7 +4,6 @@ import {
   Post,
   Body,
   Patch,
-  Param,
   Delete,
   UsePipes,
   ValidationPipe,
@@ -23,7 +22,10 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto, @Query('validation_code') validationCode?: string) {
+  create(
+    @Body() createUserDto: CreateUserDto,
+    @Query('validation_code') validationCode?: string,
+  ) {
     return this.usersService.create(createUserDto, validationCode);
   }
 
