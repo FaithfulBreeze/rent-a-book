@@ -42,6 +42,8 @@
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
+    "@swc/core": "^1.10.9",
+    "@swc/jest": "^0.2.37",
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.8",
     "@types/dotenv": "^8.2.3",
@@ -76,10 +78,10 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": "./",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
+      "^.+\\.(t|j)s$": "@swc/jest"
     },
     "collectCoverageFrom": [
       "**/*.(t|j)s"

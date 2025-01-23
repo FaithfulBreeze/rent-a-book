@@ -1,11 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
+import { AuthModule } from './auth.module';
+import { DrizzleModule } from 'src/drizzle/drizzle.module';
 
 describe('AuthService', () => {
   let service: AuthService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [AuthModule, DrizzleModule],
       providers: [AuthService],
     }).compile();
 
