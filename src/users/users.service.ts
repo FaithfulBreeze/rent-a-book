@@ -37,6 +37,7 @@ export class UsersService {
   }
 
   findOne(id: string) {
+    // eslint-disable-next-line
     const { password, email, accessToken, ...columns } = getTableColumns(
       schema.users,
     );

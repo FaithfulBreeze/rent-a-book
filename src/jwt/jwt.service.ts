@@ -11,6 +11,7 @@ export class JwtService {
     try {
       return verify(token, process.env.TOKEN_SECRET) as JwtPayload;
     } catch (error) {
+      console.error(error);
       return false;
     }
   }

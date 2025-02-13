@@ -10,7 +10,7 @@ export class AuthGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const req = context.switchToHttp().getRequest();
     const payload = this.jwtService.verifyToken(req.cookies.jwt);
-    payload ? (req.user = payload.id) : null;
+    if (payload) req.user = payload.id;
     return !!payload;
   }
 }
