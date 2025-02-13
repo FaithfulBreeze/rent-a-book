@@ -7,7 +7,7 @@ import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import 'dotenv/config';
 import { Pool } from 'pg';
 import { drizzle, NodePgDatabase } from 'drizzle-orm/node-postgres';
-let container = new PostgreSqlContainer()
+const container = new PostgreSqlContainer()
   .withDatabase('rent_a_book')
   .withUsername('rent_a_book')
   .withPassword('rent_a_book');
