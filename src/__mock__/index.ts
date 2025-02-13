@@ -1,85 +1,25 @@
 import 'jest';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
-import { UpdateUserDto } from 'src/users/dto/update-user.dto';
-
-export const getMockDrizzleProvider = (opt: { fakeInsert?: boolean }) => {
-  const drizzleProviderMockObj = {
-    users: [
-      {
-        id: '1',
-        name: 'Joseph Doe',
-        email: 'josephdoe@gmail.com',
-        password: 'password',
-        hasLibrary: false,
-        libraryId: null,
-        accessToken: '',
-      },
-    ],
-    insert: () => ({
-      values: (data) => {
-        if (!opt.fakeInsert) drizzleProviderMockObj.users.push(data);
-        return { returning: () => ({ ...data, id: '1' }) };
-      },
-    }),
-    select: () => ({
-      from: () => ({
-        where: (x) => {
-          if (x.queryChunks[1].name === 'id') {
-            const id = x.queryChunks[3].value;
-            const foundUser = drizzleProviderMockObj.users.find(
-              (user) => user.id === id,
-            );
-            const { password, email, accessToken, ...notSensibleData } =
-              foundUser;
-            return notSensibleData;
-          } else if (x.queryChunks[1].name === 'email') {
-            const email = x.queryChunks[3].value;
-            const foundUser = drizzleProviderMockObj.users.find(
-              (user) => user.email === email,
-            );
-            return foundUser || [];
-          }
-        },
-      }),
-    }),
-    update: () => ({
-      set: (data) => ({
-        where: (x) => {
-          const id = x.queryChunks[3].value;
-          let foundUser = drizzleProviderMockObj.users.find(
-            (user) => user.id === id,
-          );
-          return (foundUser = {
-            ...foundUser,
-            ...data,
-          });
-        },
-      }),
-    }),
-    delete: () => ({
-      where: (x) => {
-        const id = x.queryChunks[3].value;
-        drizzleProviderMockObj.users = drizzleProviderMockObj.users.filter((user) => user.id != id)
-      },
-    }),
-  };
-
-  return drizzleProviderMockObj;
-};
+import { CreateBookDto } from 'src/books/dto/create-book.dto';
+import { MailerService } from 'src/mailer/mailer.service';
+import { RedisService } from 'src/redis/redis.service';
 
 export const getMockRedisService = () => {
   const redisServiceMockObj = {
     validationCodes: [] as { id: string; code: string }[],
     storeValidationCode: (id: string, code: string) => {
-      redisServiceMockObj.validationCodes.push({ id, code });
+      const findIndexResult = redisServiceMockObj.validationCodes.findIndex(
+        (value) => value.id == id,
+      );
+      if (findIndexResult == -1) {
+        redisServiceMockObj.validationCodes.push({ id, code });
+      } else {
+        redisServiceMockObj.validationCodes[findIndexResult].code = code;
+      }
     },
-    getValidationCode: (id: string) => {
-      return redisServiceMockObj.validationCodes.find((value) => value.id == id)
-        .code;
-    },
+    getValidationCode: (id: string) =>
+      redisServiceMockObj.validationCodes.find((value) => value.id == id).code,
   };
-
-  return redisServiceMockObj;
+  return { provide: RedisService, useValue: redisServiceMockObj };
 };
 
 export const getMockMailerService = () => {
@@ -87,18 +27,110 @@ export const getMockMailerService = () => {
     sendMail: (addressee: string, subject: string, content: string) => {},
     sendValidationCode: (addressee: string, code: string) => {},
   };
-  return mailerServiceMockObj;
+  return { provide: MailerService, useValue: mailerServiceMockObj };
 };
 
-export const getCreateUserDto = (): CreateUserDto => ({
-  name: 'John Doe',
-  email: 'johndoe@gmail.com',
-  hasLibrary: false,
-  libraryId: null,
-  password: 'password',
-  confirmPassword: 'password',
-});
+export const getCreateUserDto = (
+  x: 'John' | 'Johanne' | 'Steve' | 'Bill',
+): any => {
+  const users = {
+    John: {
+      name: 'John Doe',
+      email: 'johndoe@gmail.com',
+      hasLibrary: false,
+      libraryId: null,
+      password: 'password',
+      confirmPassword: 'password',
+    },
+    Johanne: {
+      name: 'Johanne Doe',
+      email: 'johannedoe@gmail.com',
+      hasLibrary: false,
+      libraryId: null,
+      password: 'password',
+      confirmPassword: 'password',
+    },
+    Steve: {
+      name: 'Steve Doe',
+      email: 'stevedoe@gmail.com',
+      hasLibrary: false,
+      libraryId: null,
+      password: 'password',
+      confirmPassword: 'password',
+    },
+    Bill: {
+      name: 'Bill Doe',
+      email: 'billdoe@gmail.com',
+      hasLibrary: false,
+      libraryId: null,
+      password: 'password',
+      confirmPassword: 'password',
+    },
+  };
+  return users[x];
+};
 
-export const getUpdateUserDto = (): UpdateUserDto => ({
-  name: 'Jane Doe',
-});
+export const getCreateBookDto = (
+  x: 'Book one' | 'Book two' | 'Book three' | 'Book four',
+  authorId?: string,
+): CreateBookDto => {
+  const books: any = {
+    'Book one': {
+      title: 'Once one',
+      description: 'This is the desc of the book one',
+      pricePerDay: 50,
+      authorId: authorId,
+      rating: '1',
+      author: null,
+    },
+    'Book two': {
+      title: 'Once two',
+      description: 'This is the desc of the book two',
+      pricePerDay: 50,
+      authorId: authorId,
+      rating: '1',
+      author: null,
+    },
+    'Book three': {
+      title: 'Once three',
+      description: 'This is the desc of the book three',
+      pricePerDay: 50,
+      authorId: authorId,
+      rating: '1',
+      author: null,
+    },
+    'Book four': {
+      title: 'Once four',
+      description: 'This is the desc of the book four',
+      pricePerDay: 50,
+      authorId: authorId,
+      rating: '1',
+      author: null,
+    },
+  };
+  return books[x];
+};
+
+export const getCreateAuthorDto = (
+  x: 'Bob' | 'Josh' | 'Aiden' | 'Roger',
+): any => {
+  const authors = {
+    Bob: {
+      name: 'Bob Doe',
+      rating: '3',
+    },
+    Josh: {
+      name: 'Josh Doe',
+      rating: '3',
+    },
+    Aiden: {
+      name: 'Aiden Doe',
+      rating: '3',
+    },
+    Roger: {
+      name: 'Roger Doe',
+      rating: '3',
+    },
+  };
+  return authors[x];
+};
