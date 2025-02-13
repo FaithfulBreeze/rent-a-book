@@ -5,8 +5,9 @@ import { DrizzleModule } from 'src/drizzle/drizzle.module';
 import { EncryptionModule } from 'src/encryption/encryption.module';
 import { JwtModule } from 'src/jwt/jwt.module';
 import { MailerModule } from 'src/mailer/mailer.module';
-import { RedisModule } from 'src/redis/redis.module';
-import { getCreateUserDto, getUpdateUserDto } from 'src/__mock__';
+import { getCreateUserDto } from 'src/__mock__';
+import { CacheModule } from '@nestjs/cache-manager';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -19,11 +20,10 @@ describe('UsersController', () => {
   };
 
   beforeEach(async () => {
-    jest.resetAllMocks();
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         DrizzleModule,
-        RedisModule,
+        CacheModule.register(),
         EncryptionModule,
         JwtModule,
         MailerModule,
@@ -40,7 +40,7 @@ describe('UsersController', () => {
   });
 
   it('should call create with createUserDto', async () => {
-    const createUserDto = getCreateUserDto();
+    const createUserDto = getCreateUserDto('John');
     await controller.create(createUserDto, undefined);
     expect(mockUsersService.create).toHaveBeenCalledWith(
       createUserDto,
@@ -54,7 +54,9 @@ describe('UsersController', () => {
   });
 
   it('should call update with id: "3" and updateUserDto', async () => {
-    const updateUserDto = getUpdateUserDto();
+    const updateUserDto: UpdateUserDto = {
+      hasLibrary: true,
+    };
     await controller.update('3', updateUserDto);
     expect(mockUsersService.update).toHaveBeenCalledWith('3', updateUserDto);
   });

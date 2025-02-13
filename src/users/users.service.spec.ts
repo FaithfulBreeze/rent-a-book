@@ -4,50 +4,68 @@ import { DrizzleModule } from 'src/drizzle/drizzle.module';
 import { EncryptionModule } from 'src/encryption/encryption.module';
 import { JwtModule } from 'src/jwt/jwt.module';
 import { MailerModule } from 'src/mailer/mailer.module';
-import { RedisModule } from 'src/redis/redis.module';
 import {
   getCreateUserDto,
-  getMockDrizzleProvider,
   getMockMailerService,
   getMockRedisService,
 } from 'src/__mock__';
+import {
+  getMockDrizzleProvider,
+  getDatabaseInstance,
+  startContainer,
+  getSchema,
+  stopContainer,
+} from 'src/__mock__/testdatabase';
+import { NodePgDatabase } from 'drizzle-orm/node-postgres';
+import { eq } from 'drizzle-orm';
+import { CacheModule } from '@nestjs/cache-manager';
 import { RedisService } from 'src/redis/redis.service';
-import { MailerService } from 'src/mailer/mailer.service';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 describe('UsersService', () => {
+  const schema = getSchema();
   let service: UsersService;
+  let redisService: RedisService;
+  let drizzleProvider: NodePgDatabase<typeof schema>;
 
-  const mockDrizzleProvider = getMockDrizzleProvider({ fakeInsert: true });
-  const mockRedisService = getMockRedisService();
-  const mockMailerService = getMockMailerService();
+  beforeAll(async () => {
+    await startContainer();
+  }, 10 * 1000);
+
+  afterAll(async () => {
+    await stopContainer();
+  });
 
   beforeEach(async () => {
-    jest.clearAllMocks();
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         DrizzleModule,
-        RedisModule,
+        CacheModule.register(),
         EncryptionModule,
         JwtModule,
         MailerModule,
       ],
       providers: [
         UsersService,
-        { provide: 'DrizzleProvider', useValue: mockDrizzleProvider },
-        { provide: RedisService, useValue: mockRedisService },
-        { provide: MailerService, useValue: mockMailerService },
+        getMockDrizzleProvider(),
+        getMockRedisService(),
+        getMockMailerService(),
       ],
     }).compile();
 
     service = module.get<UsersService>(UsersService);
+    drizzleProvider = getDatabaseInstance();
+    redisService = module.get<RedisService>(RedisService);
+    await drizzleProvider.delete(schema.users);
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+    expect(redisService).toBeDefined();
   });
 
   it('should send email validation code', async () => {
-    const createUserDto = getCreateUserDto();
+    const createUserDto = getCreateUserDto('Steve');
     const { message } = (await service.create(createUserDto)) as {
       message: string;
     };
@@ -57,30 +75,32 @@ describe('UsersService', () => {
   });
 
   it('should throw if validation code is invalid or expired', async () => {
-    const createUserDto = getCreateUserDto();
+    const createUserDto = getCreateUserDto('John');
     await service.create(createUserDto);
     const validationCode = 'invalid_validation_code';
     try {
-      await service.create(getCreateUserDto(), validationCode);
+      await service.create(getCreateUserDto('John'), validationCode);
     } catch (error) {
       expect(error.message).toBe('Code not valid or expired');
     }
   });
 
   it('should create a user', async () => {
-    const createUserDto = getCreateUserDto();
+    const createUserDto = getCreateUserDto('Johanne');
     await service.create(createUserDto);
-    const validationCode = mockRedisService.getValidationCode(
+    const validationCode = redisService.getValidationCode(
       createUserDto.email,
+    ) as unknown as string;
+    const data = await service.create(
+      getCreateUserDto('Johanne'),
+      validationCode,
     );
-    expect(
-      await service.create(getCreateUserDto(), validationCode),
-    ).toHaveProperty('id');
+    expect(data[0]).toHaveProperty('id');
   });
 
   it('should throw error if email already taken', async () => {
-    const createUserDto = getCreateUserDto();
-    createUserDto.email = 'josephdoe@gmail.com';
+    const createUserDto = getCreateUserDto('Johanne');
+    createUserDto.email = 'johannedoe@gmail.com';
     try {
       await service.create(createUserDto);
     } catch (error) {
@@ -89,7 +109,7 @@ describe('UsersService', () => {
   });
 
   it('should throw error if password != confirmPassword', async () => {
-    const createUserDto = getCreateUserDto();
+    const createUserDto = getCreateUserDto('Steve');
     createUserDto.password = 'differentPassword';
     try {
       await service.create(createUserDto);
@@ -98,22 +118,44 @@ describe('UsersService', () => {
     }
   });
 
-  it('should find user with id: "1"', async () => {
-    expect(await service.findOne('1')).toHaveProperty('name', 'Joseph Doe');
+  it(`should find user by id`, async () => {
+    const [createdUser] = await drizzleProvider
+      .insert(schema.users)
+      .values(getCreateUserDto('Bill'))
+      .returning();
+    const { id } = createdUser;
+    const [foundUser] = await service.findOne(id);
+    expect(foundUser).toHaveProperty('name', 'Bill Doe');
   });
 
   it('should update a user', async () => {
-    const userToBeUpdated = mockDrizzleProvider.users[0];
-    expect(
-      await service.update(userToBeUpdated.id, {
-        email: 'updatedemail@gmail.com',
-      }),
-    ).toHaveProperty('email', 'updatedemail@gmail.com');
+    const [createdUser] = await drizzleProvider
+      .insert(schema.users)
+      .values(getCreateUserDto('Bill'))
+      .returning();
+    const { id } = createdUser;
+    const updateUserDto: UpdateUserDto = {
+      name: 'Jane Doe',
+    };
+    await service.update(id, updateUserDto);
+    const [updatedUser] = await drizzleProvider
+      .select()
+      .from(schema.users)
+      .where(eq(schema.users.id, id));
+    expect(updatedUser).toHaveProperty('name', 'Jane Doe');
   });
 
   it('should remove a user', async () => {
-    const userToBeDeleted = mockDrizzleProvider.users[0]
-    await service.remove(userToBeDeleted.id)
-    expect(mockDrizzleProvider.users.length).toBe(0)
-  })
+    const [createdUser] = await drizzleProvider
+      .insert(schema.users)
+      .values(getCreateUserDto('Bill'))
+      .returning();
+    const { id } = createdUser;
+    await service.remove(id);
+    const foundData = await drizzleProvider
+      .select()
+      .from(schema.users)
+      .where(eq(schema.users.id, id));
+    expect(foundData).toHaveLength(0);
+  });
 });
