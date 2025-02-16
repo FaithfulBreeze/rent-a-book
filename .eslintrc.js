@@ -15,7 +15,15 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['.eslintrc.js'],
+  ignorePatterns: [
+    '.eslintrc.js',
+    '/node_modules',
+    '/postgres_data',
+    '/drizzle',
+    '/dist',
+    '/cache',
+    '/src/__mock__',
+  ],
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
