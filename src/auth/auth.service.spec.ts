@@ -20,7 +20,7 @@ describe('AuthService', () => {
 
   beforeAll(async () => {
     await startContainer();
-  }, 10 * 1000);
+  }, 50 * 1000);
 
   afterAll(async () => {
     await stopContainer();
