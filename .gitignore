@@ -47,7 +47,6 @@ lerna-debug.log*
 .tmp
 
 # Runtime data
-drizzle
 pids
 postgres_data
 cache
