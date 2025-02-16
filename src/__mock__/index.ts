@@ -1,5 +1,6 @@
 import 'jest';
 import { CreateBookDto } from 'src/books/dto/create-book.dto';
+import { EncryptionService } from 'src/encryption/encryption.service';
 import { MailerService } from 'src/mailer/mailer.service';
 import { RedisService } from 'src/redis/redis.service';
 
@@ -28,6 +29,14 @@ export const getMockMailerService = () => {
     sendValidationCode: (addressee: string, code: string) => {},
   };
   return { provide: MailerService, useValue: mailerServiceMockObj };
+};
+
+export const getMockEncryptionService = () => {
+  const encryptionServiceMockObj = {
+    encrypt: (x: string) => x,
+    decrypt: (x: string) => x,
+  };
+  return { provide: EncryptionService, useValue: encryptionServiceMockObj };
 };
 
 export const getCreateUserDto = (

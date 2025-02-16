@@ -18,9 +18,10 @@ export class AuthService {
     private readonly encryptionService: EncryptionService,
   ) {}
   async login(loginDto: LoginDto) {
-    const user = await this.db.query.users.findFirst({
-      where: eq(schema.users.email, loginDto.email),
-    });
+    const [user] = await this.db
+      .select()
+      .from(schema.users)
+      .where(eq(schema.users.email, loginDto.email));
 
     if (!user) throw new NotFoundException();
 
