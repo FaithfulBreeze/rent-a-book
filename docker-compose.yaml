@@ -1,0 +1,11 @@
+services:
+  db:
+    image: postgres
+    container_name: db
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=rent_a_book
+      - POSTGRES_USER=rent_a_book
+    ports: 
+      - 9909:5432
