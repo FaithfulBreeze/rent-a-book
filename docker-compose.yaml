@@ -1,4 +1,13 @@
 services:
+  redis: 
+    container_name: redis
+    image: redis
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes: 
+      - ./cache:/data
+
   db:
     image: postgres
     container_name: db
@@ -9,3 +18,7 @@ services:
       - POSTGRES_USER=rent_a_book
     ports: 
       - 9909:5432
+
+volumes:
+  cache:
+    driver: local
