@@ -22,7 +22,7 @@ export class UsersRepository {
   }
 
   updateUser(id: string, updateUserDto: UpdateUserDto) {
-    return this.db.update(schema.users).set(updateUserDto).returning();
+    return this.db.update(schema.users).set(updateUserDto).where(eq(schema.users.id, id)).returning();
   }
 
   removeUser(id: string) {
