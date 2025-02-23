@@ -3,5 +3,6 @@
   "trailingComma": "all",
   "semi": true,
   "bracketSpacing": true,
-  "filepath": "src/**/*.ts"
+  "filepath": "src/**/*.ts",
+  "printWidth": 120
 }
