@@ -52,7 +52,7 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    if(!Object.keys(updateUserDto).length) throw new BadRequestException('No data provided.')
+    if (!Object.keys(updateUserDto).length) throw new BadRequestException('No data provided.');
     if (updateUserDto.username) {
       const [foundUsernameInUse] = await this.usersRepository.getUserData('username', updateUserDto?.username);
       if (foundUsernameInUse)
