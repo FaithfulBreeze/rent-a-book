@@ -9,7 +9,7 @@ export const users = pgTable('users', {
   email: varchar('email', { length: 30 }).unique().notNull(),
   password: varchar('password').notNull(),
   accessToken: varchar('access_token'),
-  libraryId: uuid('library_id').references(() => libraries.id),
+  libraryId: uuid('library_id').references(() => libraries.id, { onDelete: 'set null' }),
 });
 
 export const libraries = pgTable('libraries', {
@@ -24,8 +24,8 @@ export const books = pgTable('books', {
   description: varchar('description', { length: 120 }),
   rating: rating().default('1'),
   authorId: uuid('author_id').references(() => authors.id),
-  libraryId: uuid('library_id').references(() => libraries.id),
-  stockId: uuid('stock_id').references(() => stocks.id),
+  libraryId: uuid('library_id').references(() => libraries.id, { onDelete: 'cascade' }),
+  stockId: uuid('stock_id').references(() => stocks.id, { onDelete: 'cascade' }),
 });
 
 export const authors = pgTable('authors', {
@@ -42,6 +42,6 @@ export const stocks = pgTable('stocks', {
 
 export const borrowHistory = pgTable('borrow_history', {
   id: uuid('id').primaryKey().defaultRandom(),
-  stockId: uuid('stock_id').references(() => stocks.id),
-  userId: uuid('user_id').references(() => users.id),
+  stockId: uuid('stock_id').references(() => stocks.id, { onDelete: 'cascade' }),
+  userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }),
 });

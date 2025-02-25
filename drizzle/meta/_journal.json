@@ -22,6 +22,20 @@
       "when": 1740275498925,
       "tag": "0002_pretty_salo",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1740363150135,
+      "tag": "0003_public_lizard",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1740363807727,
+      "tag": "0004_empty_glorian",
+      "breakpoints": true
     }
   ]
 }
