@@ -6,9 +6,19 @@ import { JwtModule } from 'jwt/jwt.module';
 import { RedisModule } from 'redis/redis.module';
 import { MailerModule } from 'mailer/mailer.module';
 import { EncryptionModule } from 'encryption/encryption.module';
+import { LibrariesModule } from './libraries/libraries.module';
 
 @Module({
-  imports: [DrizzleModule, UsersModule, AuthModule, JwtModule, RedisModule, MailerModule, EncryptionModule],
+  imports: [
+    DrizzleModule,
+    UsersModule,
+    AuthModule,
+    JwtModule,
+    RedisModule,
+    MailerModule,
+    EncryptionModule,
+    LibrariesModule,
+  ],
   controllers: [],
   providers: [],
 })
