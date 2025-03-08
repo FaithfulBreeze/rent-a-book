@@ -26,7 +26,7 @@ export class LibrariesRepository
   ) {}
 
   async create(createLibraryDto: CreateLibraryDto) {
-    return await this.db.insert(schema.libraries).values(createLibraryDto).returning();
+    return (await this.db.insert(schema.libraries).values(createLibraryDto).returning())[0];
   }
 
   async findAll(limit?: number, offset?: number) {
