@@ -14,10 +14,10 @@ import {
 import { LibrariesService } from './libraries.service';
 import { CreateLibraryDto } from './dto/create-library.dto';
 import { UpdateLibraryDto } from './dto/update-library.dto';
-import { AuthGuard } from 'guards/auth/auth.guard';
-import { User } from 'decorators/user/user.decorator';
-import { Library } from 'decorators/library/library.decorator';
-import { LibraryGuard } from 'guards/library/library.guard';
+import { AuthGuard } from 'common/guards/auth/auth.guard';
+import { User } from 'common/decorators/user/user.decorator';
+import { Library } from 'common/decorators/library/library.decorator';
+import { LibraryGuard } from 'common/guards/library/library.guard';
 
 @Controller('libraries')
 @UsePipes(ValidationPipe)

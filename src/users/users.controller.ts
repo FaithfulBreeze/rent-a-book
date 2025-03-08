@@ -2,8 +2,8 @@ import { Controller, Get, Post, Body, Patch, Delete, UsePipes, ValidationPipe, U
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthGuard } from 'guards/auth/auth.guard';
-import { User } from 'decorators/user/user.decorator';
+import { AuthGuard } from 'common/guards/auth/auth.guard';
+import { User } from 'common/decorators/user/user.decorator';
 
 @Controller('users')
 @UsePipes(ValidationPipe)

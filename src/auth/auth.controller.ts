@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, Post, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
-import { AppendTokenInterceptor } from 'interceptors/append-token/append-token.interceptor';
+import { AppendTokenInterceptor } from 'common/interceptors/append-token/append-token.interceptor';
 
 @Controller('auth')
 @UsePipes(ValidationPipe)
