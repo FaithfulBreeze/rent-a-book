@@ -19,9 +19,9 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@src": ["src/*"],
-      "@guards": ["src/guards/*"],
-      "@decorators": ["src/decorators/*"],
-      "@middlewares": ["src/middlewares/*"],
+      "@guards": ["src/common/guards/*"],
+      "@decorators": ["src/common/decorators/*"],
+      "@middlewares": ["src/common/middlewares/*"],
     }
   }
 }
