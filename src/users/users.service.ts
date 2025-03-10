@@ -20,10 +20,10 @@ export class UsersService {
     if (createUserDto.password != createUserDto.confirmPassword)
       throw new BadRequestException('Fields password and confirmPassword does not match.');
 
-    const [foundEmailInUse] = await this.usersRepository.getUserData('email', createUserDto.email);
+    const foundEmailInUse = await this.usersRepository.findOne('email', createUserDto.email);
     if (foundEmailInUse) throw new ConflictException(`The email '${foundEmailInUse.email}' is already in use.`);
 
-    const [foundUsernameInUse] = await this.usersRepository.getUserData('username', createUserDto.username);
+    const foundUsernameInUse = await this.usersRepository.findOne('username', createUserDto.username);
     if (foundUsernameInUse)
       throw new ConflictException(`The username '${foundUsernameInUse.username}' is already in use.`);
 
@@ -43,18 +43,19 @@ export class UsersService {
     createUserDto.password = await this.encryptionService.encrypt(createUserDto.password);
 
     const { confirmPassword, ...Dto } = createUserDto;
-    const [{ password, ...createdUser }] = await this.usersRepository.createUser(Dto);
+    const { password, ...createdUser } = await this.usersRepository.create(Dto);
     return createdUser;
   }
 
-  findOne(id: string) {
-    return this.usersRepository.getUserData('id', id);
+  async findOne(id: string) {
+    const { password, accessToken, libraryId, ...foundUser } = await this.usersRepository.findOne('id', id);
+    return foundUser;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     if (!Object.keys(updateUserDto).length) throw new BadRequestException('No data provided.');
     if (updateUserDto.username) {
-      const [foundUsernameInUse] = await this.usersRepository.getUserData('username', updateUserDto?.username);
+      const foundUsernameInUse = await this.usersRepository.findOne('username', updateUserDto?.username);
       if (foundUsernameInUse)
         throw new ConflictException(`The username '${foundUsernameInUse.username}' is already in use.`);
     }
@@ -63,14 +64,14 @@ export class UsersService {
       updateUserDto.password = await this.encryptionService.encrypt(updateUserDto.password);
     }
 
-    const [{ password, accessToken, ...updatedUser }] = await this.usersRepository.updateUser(id, updateUserDto);
+    const { password, accessToken, ...updatedUser } = await this.usersRepository.update(id, updateUserDto);
     return updatedUser;
   }
 
   async remove(id: string) {
-    const [user] = await this.usersRepository.getUserData('id', id);
+    const user = await this.usersRepository.findOne('id', id);
     if (!user) throw new NotFoundException();
-    await this.usersRepository.removeUser(id);
+    await this.usersRepository.remove(id);
     return { message: 'User removed.' };
   }
 }

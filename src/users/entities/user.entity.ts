@@ -4,6 +4,6 @@ export class User {
   name: string;
   email: string;
   password: string;
-  accessToken: string;
-  libraryId: string;
+  accessToken: string | null;
+  libraryId: string | null;
 }

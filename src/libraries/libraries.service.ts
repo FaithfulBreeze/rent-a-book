@@ -12,12 +12,12 @@ export class LibrariesService {
     private readonly usersRepository: UsersRepository,
   ) {}
   async create(createLibraryDto: CreateLibraryDto, userId: string) {
-    const [foundUser] = await this.usersRepository.getUserData('id', userId);
+    const foundUser = await this.usersRepository.findOne('id', userId);
     if (foundUser.libraryId) throw new ConflictException('This user already has a library.');
     const foundLibrary = await this.librariesRepository.findOne('name', createLibraryDto.name);
     if (foundLibrary) throw new ConflictException(`The library name ${createLibraryDto.name} is already in use.`);
     const createdLibrary = await this.librariesRepository.create(createLibraryDto);
-    await this.usersRepository.updateUser(userId, { libraryId: createdLibrary.id } as UpdateUserDto);
+    await this.usersRepository.update(userId, { libraryId: createdLibrary.id } as UpdateUserDto);
     return createdLibrary;
   }
 
