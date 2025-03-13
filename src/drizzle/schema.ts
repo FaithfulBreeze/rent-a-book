@@ -15,14 +15,14 @@ export const users = pgTable('users', {
 export const libraries = pgTable('libraries', {
   id: uuid('id').primaryKey().defaultRandom(),
   name: varchar('name', { length: 30 }).notNull().unique(),
-  rating: rating().default('1'),
+  rating: rating().default('1').notNull(),
 });
 
 export const books = pgTable('books', {
   id: uuid('id').primaryKey().defaultRandom(),
   name: varchar('name', { length: 30 }),
   description: varchar('description', { length: 120 }),
-  rating: rating().default('1'),
+  rating: rating().default('1').notNull(),
   authorId: uuid('author_id').references(() => authors.id),
   libraryId: uuid('library_id').references(() => libraries.id, { onDelete: 'cascade' }),
   stockId: uuid('stock_id').references(() => stocks.id, { onDelete: 'cascade' }),
@@ -31,7 +31,7 @@ export const books = pgTable('books', {
 export const authors = pgTable('authors', {
   id: uuid('id').primaryKey().defaultRandom(),
   name: varchar('name', { length: 50 }),
-  rating: rating().default('1'),
+  rating: rating().default('1').notNull(),
 });
 
 export const stocks = pgTable('stocks', {

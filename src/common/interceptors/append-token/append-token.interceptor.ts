@@ -7,7 +7,7 @@ export class AppendTokenInterceptor implements NestInterceptor {
   constructor(private readonly jwtService: JwtService) {}
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
-      tap((id) => {
+      tap(({ id }) => {
         const res = context.switchToHttp().getResponse();
         res.cookie('jwt', this.jwtService.generateToken(id), {
           httpOnly: true,
