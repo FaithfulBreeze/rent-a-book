@@ -6,4 +6,5 @@ export class User {
   password: string;
   accessToken: string | null;
   libraryId: string | null;
+  authorProfile: string | null;
 }
