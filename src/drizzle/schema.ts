@@ -30,7 +30,7 @@ export const books = pgTable('books', {
 
 export const authors = pgTable('authors', {
   id: uuid('id').primaryKey().defaultRandom(),
-  name: varchar('name', { length: 50 }),
+  name: varchar('name', { length: 50 }).notNull(),
   rating: rating().default('1').notNull(),
 });
 
