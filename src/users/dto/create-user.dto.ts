@@ -19,6 +19,4 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   confirmPassword: string;
-  accessToken: string;
-  libraryId: string;
 }
