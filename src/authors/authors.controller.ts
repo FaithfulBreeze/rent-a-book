@@ -1,19 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-  Query,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete, UseGuards, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
-import { UpdateAuthorDto } from './dto/update-author.dto';
 import { AuthGuard } from 'common/guards/auth/auth.guard';
 import { LibraryGuard } from 'common/guards/library/library.guard';
 import { User } from 'common/decorators/user/user.decorator';

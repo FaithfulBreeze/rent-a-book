@@ -42,12 +42,15 @@ export class UsersService {
 
     createUserDto.password = await this.encryptionService.encrypt(createUserDto.password);
 
+    //eslint-disable-next-line  @typescript-eslint/no-unused-vars
     const { confirmPassword, ...Dto } = createUserDto;
+    //eslint-disable-next-line  @typescript-eslint/no-unused-vars
     const { password, ...createdUser } = await this.usersRepository.create(Dto);
     return createdUser;
   }
 
   async findOne(id: string) {
+    //eslint-disable-next-line  @typescript-eslint/no-unused-vars
     const { password, accessToken, libraryId, ...foundUser } = await this.usersRepository.findOne('id', id);
     return foundUser;
   }
@@ -64,6 +67,7 @@ export class UsersService {
       updateUserDto.password = await this.encryptionService.encrypt(updateUserDto.password);
     }
 
+    //eslint-disable-next-line  @typescript-eslint/no-unused-vars
     const { password, accessToken, ...updatedUser } = await this.usersRepository.update(id, updateUserDto);
     return updatedUser;
   }
