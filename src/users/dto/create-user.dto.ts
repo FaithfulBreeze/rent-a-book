@@ -1,4 +1,4 @@
-import { Equals, IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -19,6 +19,4 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   confirmPassword: string;
-  accessToken: string;
-  libraryId: string;
 }

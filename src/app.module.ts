@@ -7,6 +7,7 @@ import { RedisModule } from 'redis/redis.module';
 import { MailerModule } from 'mailer/mailer.module';
 import { EncryptionModule } from 'encryption/encryption.module';
 import { LibrariesModule } from './libraries/libraries.module';
+import { AuthorsModule } from './authors/authors.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { LibrariesModule } from './libraries/libraries.module';
     MailerModule,
     EncryptionModule,
     LibrariesModule,
+    AuthorsModule,
   ],
   controllers: [],
   providers: [],

@@ -1,6 +1,6 @@
 {
-  "id": "ac9e9f52-07fb-42d2-8817-64cdd16ba674",
-  "prevId": "cf0e3916-b4e2-4451-8c6a-f30c90903f1a",
+  "id": "52875a99-a58c-4f81-b077-72888911f0cd",
+  "prevId": "ac9e9f52-07fb-42d2-8817-64cdd16ba674",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -19,7 +19,7 @@
           "name": "name",
           "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "rating": {
           "name": "rating",
