@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Delete, UseGuards, Query, UsePipes, Valida
 import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { AuthGuard } from 'common/guards/auth/auth.guard';
-import { LibraryGuard } from 'common/guards/library/library.guard';
 import { User } from 'common/decorators/user/user.decorator';
 import { AuthorGuard } from 'common/guards/author/author.guard';
 import { Author } from 'common/decorators/author/author.decorator';
@@ -12,7 +11,7 @@ import { Author } from 'common/decorators/author/author.decorator';
 export class AuthorsController {
   constructor(private readonly authorsService: AuthorsService) {}
 
-  @UseGuards(AuthGuard, LibraryGuard)
+  @UseGuards(AuthGuard)
   @Post()
   create(@Body() createAuthorDto: CreateAuthorDto, @User() userId: string) {
     return this.authorsService.create(createAuthorDto, userId);
