@@ -8,5 +8,5 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsString()
   libraryId?: string;
   @IsString()
-  acessToken?: string;
+  accessToken?: string;
 }
