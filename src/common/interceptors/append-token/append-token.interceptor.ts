@@ -14,7 +14,7 @@ export class AppendTokenInterceptor implements NestInterceptor {
       tap(({ id }) => {
         const res = context.switchToHttp().getResponse();
         const token = this.jwtService.generateToken(id);
-        this.usersRepository.update(id, { acessToken: token });
+        this.usersRepository.update(id, { accessToken: token });
         res.cookie('jwt', token, {
           httpOnly: true,
           maxAge: 1000 * 60 * 60,
