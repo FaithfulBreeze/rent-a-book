@@ -8,6 +8,8 @@ import { MailerModule } from 'mailer/mailer.module';
 import { EncryptionModule } from 'encryption/encryption.module';
 import { LibrariesModule } from './libraries/libraries.module';
 import { AuthorsModule } from './authors/authors.module';
+import { BooksModule } from './books/books.module';
+import { PdfModule } from './pdf/pdf.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { AuthorsModule } from './authors/authors.module';
     EncryptionModule,
     LibrariesModule,
     AuthorsModule,
+    BooksModule,
+    PdfModule,
   ],
   controllers: [],
   providers: [],

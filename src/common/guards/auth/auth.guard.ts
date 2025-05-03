@@ -1,6 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from 'jwt/jwt.service';
-import { Observable } from 'rxjs';
 import { UsersRepository } from 'users/users.repository';
 
 @Injectable()
