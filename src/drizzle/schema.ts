@@ -21,11 +21,14 @@ export const libraries = pgTable('libraries', {
 
 export const books = pgTable('books', {
   id: uuid('id').primaryKey().defaultRandom(),
-  name: varchar('name', { length: 30 }),
-  description: varchar('description', { length: 120 }),
+  name: varchar('name', { length: 30 }).notNull(),
+  description: varchar('description', { length: 120 }).notNull(),
+  content: varchar('content').notNull(),
   rating: rating().default('1').notNull(),
-  authorId: uuid('author_id').references(() => authors.id),
-  filePath: varchar('file_path').notNull(),
+  authorId: uuid('author_id')
+    .references(() => authors.id)
+    .notNull(),
+  filename: varchar('file_path').notNull(),
 });
 
 export const authors = pgTable('authors', {
