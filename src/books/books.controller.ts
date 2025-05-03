@@ -10,7 +10,6 @@ import {
   ValidationPipe,
   UseGuards,
   Query,
-  Header,
   Res,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
@@ -40,6 +39,7 @@ export class BooksController {
   @Get(':id')
   async findOne(@Param('id') id: string, @Query('file') file: boolean, @Res() res: Response) {
     const foundBook = await this.booksService.findOne(id, file);
+    //eslint-disable-next-line  @typescript-eslint/no-unused-expressions
     file ? res.sendFile(foundBook as string) : res.json(foundBook);
   }
 

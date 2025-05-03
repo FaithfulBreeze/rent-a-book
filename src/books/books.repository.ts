@@ -22,6 +22,7 @@ export class BooksRepository
   }
 
   async findAll(limit?: number, offset?: number, author?: string) {
+    //eslint-disable-next-line  @typescript-eslint/no-unused-vars
     const { content, ...fields } = getTableColumns(schema.books);
     if (author) {
       return await this.db

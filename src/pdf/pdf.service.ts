@@ -22,7 +22,7 @@ export class PdfService implements ServicePdf {
     await this.ensureFolderExists();
     this.writeBookCover(book, author);
     const contentByPage = this.splitContentByPages(book.content);
-    this.writeContentPages(contentByPage, book);
+    this.writeContentPages(contentByPage);
     this.jsPdf.save(join(__dirname, '..', '..', '..', 'pdfs', `${filename}.pdf`));
     this.jsPdf.close();
     return filename;
@@ -31,6 +31,7 @@ export class PdfService implements ServicePdf {
   private async ensureFolderExists() {
     try {
       await mkdir(join(__dirname, '..', '..', '..', 'pdfs'));
+      //eslint-disable-next-line  @typescript-eslint/no-unused-vars
     } catch (error) {}
   }
 
@@ -54,7 +55,7 @@ export class PdfService implements ServicePdf {
     return result;
   }
 
-  private writeContentPages(contentByPage: string[], book: CreateBookDto) {
+  private writeContentPages(contentByPage: string[]) {
     this.jsPdf.setFont('times', 'normal');
     contentByPage.forEach((content) => {
       this.jsPdf.setFontSize(20);

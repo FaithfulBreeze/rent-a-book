@@ -15,7 +15,7 @@ export class AuthorsService {
     if (foundUser.authorProfile) throw new ConflictException('This user already have an author profile.');
     const createdAuthor = await this.authorsRepository.create(createAuthorDto);
     await this.usersRepository.update(userId, { authorProfile: createdAuthor.id });
-    return createdAuthor
+    return createdAuthor;
   }
 
   async findAll(limit?: number, offset?: number) {
