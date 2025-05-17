@@ -32,8 +32,13 @@ export class BooksController {
   }
 
   @Get()
-  findAll(@Query('limit') limit: string, @Query('offset') offset: string, @Query('author') author: string) {
-    return this.booksService.findAll(+limit, +offset, author);
+  findAll(
+    @Query('limit') limit: string,
+    @Query('offset') offset: string,
+    @Query('author') author: string,
+    @Query('name') name: string,
+  ) {
+    return this.booksService.findAll(+limit, +offset, author, name);
   }
 
   @Get(':id')
