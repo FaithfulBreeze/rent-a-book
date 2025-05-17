@@ -19,8 +19,8 @@ export class BooksService {
     return await this.booksRepository.create({ ...createBookDto, filename, authorId });
   }
 
-  async findAll(limit?: number, offset?: number, author?: string) {
-    return this.booksRepository.findAll(limit, offset, author);
+  async findAll(limit?: number, offset?: number, author?: string, name?: string) {
+    return this.booksRepository.findAll(limit, offset, author, name);
   }
 
   async findOne(id: string, file: boolean) {

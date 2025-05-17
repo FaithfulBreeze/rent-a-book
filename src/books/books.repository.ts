@@ -6,7 +6,7 @@ import { RepositoryFindAll } from 'common/interfaces/repository-find-all/reposit
 import { RepositoryRemove } from 'common/interfaces/repository-remove/repository-remove.interface';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from 'drizzle/schema';
-import { eq, getTableColumns } from 'drizzle-orm';
+import { and, eq, getTableColumns, ilike, SQL } from 'drizzle-orm';
 import { Book } from './entities/book.entity';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
@@ -21,20 +21,18 @@ export class BooksRepository
     return (await this.db.insert(schema.books).values(createBookDto).returning())[0];
   }
 
-  async findAll(limit?: number, offset?: number, author?: string) {
+  async findAll(limit?: number, offset?: number, author?: string, name?: string) {
+    const filters: SQL[] = [];
+
+    if (name) filters.push(ilike(schema.books.name, `%${name}%`));
+    if (author) filters.push(eq(schema.books.authorId, author));
     //eslint-disable-next-line  @typescript-eslint/no-unused-vars
     const { content, ...fields } = getTableColumns(schema.books);
-    if (author) {
-      return await this.db
-        .select(fields)
-        .from(schema.books)
-        .where(eq(schema.books.authorId, author))
-        .limit(limit || 10)
-        .offset(offset || 0);
-    }
+
     return await this.db
       .select(fields)
       .from(schema.books)
+      .where(and(...filters))
       .limit(limit || 10)
       .offset(offset || 0);
   }
