@@ -37,8 +37,9 @@ export class BooksController {
     @Query('offset') offset: string,
     @Query('author') author: string,
     @Query('name') name: string,
+    @Query('include-author') includeAuthor: boolean,
   ) {
-    return this.booksService.findAll(+limit, +offset, author, name);
+    return this.booksService.findAll(+limit, +offset, author, name, includeAuthor);
   }
 
   @Get(':id')
