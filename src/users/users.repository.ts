@@ -4,16 +4,9 @@ import * as schema from 'drizzle/schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { eq } from 'drizzle-orm';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { RepositoryCreate } from 'common/interfaces/repository-create/repository-create.interface';
-import { User } from './entities/user.entity';
-import { RepositoryFindOne } from 'common/interfaces/repository-find-one/repository-find-one.interface';
-import { RepositoryRemove } from 'common/interfaces/repository-remove/repository-remove.interface';
-import { RepositoryUpdate } from 'common/interfaces/repository-update/repository-update.interface';
 
 @Injectable()
-export class UsersRepository
-  implements RepositoryCreate<User>, RepositoryFindOne<User>, RepositoryUpdate<User>, RepositoryRemove
-{
+export class UsersRepository {
   constructor(
     @Inject('DrizzleService')
     private readonly db: NodePgDatabase<typeof schema>,

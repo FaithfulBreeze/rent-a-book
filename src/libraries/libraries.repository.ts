@@ -4,22 +4,9 @@ import * as schema from 'drizzle/schema';
 import { CreateLibraryDto } from './dto/create-library.dto';
 import { eq } from 'drizzle-orm';
 import { UpdateLibraryDto } from './dto/update-library.dto';
-import { RepositoryCreate } from 'common/interfaces/repository-create/repository-create.interface';
-import { Library } from './entities/library.entity';
-import { RepositoryFindAll } from 'common/interfaces/repository-find-all/repository-find-all.interface';
-import { RepositoryFindOne } from 'common/interfaces/repository-find-one/repository-find-one.interface';
-import { RepositoryUpdate } from 'common/interfaces/repository-update/repository-update.interface';
-import { RepositoryRemove } from 'common/interfaces/repository-remove/repository-remove.interface';
 
 @Injectable()
-export class LibrariesRepository
-  implements
-    RepositoryCreate<Library>,
-    RepositoryFindAll<Library>,
-    RepositoryFindOne<Library>,
-    RepositoryUpdate<Library>,
-    RepositoryRemove
-{
+export class LibrariesRepository {
   constructor(
     @Inject('DrizzleService')
     private readonly db: NodePgDatabase<typeof schema>,

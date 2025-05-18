@@ -1,18 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { RepositoryCreate } from 'common/interfaces/repository-create/repository-create.interface';
-import { Author } from './entities/author.entity';
-import { RepositoryFindOne } from 'common/interfaces/repository-find-one/repository-find-one.interface';
-import { RepositoryFindAll } from 'common/interfaces/repository-find-all/repository-find-all.interface';
-import { RepositoryRemove } from 'common/interfaces/repository-remove/repository-remove.interface';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from 'drizzle/schema';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { eq } from 'drizzle-orm';
 
 @Injectable()
-export class AuthorsRepository
-  implements RepositoryCreate<Author>, RepositoryFindOne<Author>, RepositoryFindAll<Author>, RepositoryRemove
-{
+export class AuthorsRepository {
   constructor(@Inject('DrizzleService') private readonly db: NodePgDatabase<typeof schema>) {}
 
   async create(createAuthorDto: CreateAuthorDto) {
